@@ -1,0 +1,101 @@
+{% extends "backstage.html" %}
+{% block head %}
+{{ super() }}
+{% endblock head %}
+
+{% block title %} 評論管理 {% endblock title %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages[0] == 'No permission' %}
+  
+<script language="javascript">
+
+  alert('您沒有使用者的權限喔！');
+
+</script>
+
+
+{% endif %}
+{% endwith %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages[0] == 'failed' %}
+  
+<script language="javascript">
+
+  alert('有使用者有使用到這筆資料，所以不能刪除');
+
+</script>
+
+{% endif %}
+{% endwith %}
+
+<script>
+    $(document).ready(function(){
+        $("#keyword").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#product tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+&nbsp;
+&nbsp;
+<div class="d-flex justify-content-between container-xxl">
+    <div class="d-flex col-sm-4">
+        <span class="input-group-text" id="basic-addon1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
+        </span>
+        <input class="form-control me-2" id="keyword" placeholder="搜尋評論" aria-label="Search">
+    </div>
+</div>
+
+<br/>
+
+<div class="container-xxl">
+
+<form method='post' action={{ url_for('manager.reviewManager') }} >
+<table id="manager" class="table table-bordered">
+    <thead>
+        <tr>
+            <th width="10%"><center>評論編號</center></th>
+            <th width="20%"><center>商品名稱</center></th>
+            <th width="15%"><center>使用者名稱</center></th>
+            <th width="15%"><center>評論評分</center></th>
+            <th width="15%"><center>評論內容</center></th>
+            <th width="15%"><center>評論時間</center></th>
+            <th width="15%"><center>資料操作</center></th>
+        </tr>
+    </thead>
+    <tbody id="product">
+    {% for i in book_data %}
+        <tr>
+            <td><center>{{ i.評論編號 }}</center></td>
+            <td><center>{{ i.商品名稱 }}</center></td>
+            <td><center>{{ i.使用者名稱 }}</center></td>
+            <td><center>{{ i.評論評分 }}</center></td>
+            <td><center>{{ i.評論內容 }}</center></td>
+            <td><center>{{ i.評論時間 }}</center></td>
+            <td><center><button type="submit" value="{{i.評論編號}}" name="delete" onclick="return (confirm('你確定要刪除 \'{{ i.評論編號 }}\' 嗎？'))" class="btn btn-danger">刪除評論</button></center></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    
+</table>
+</form>
+
+
+</div>
+
+<script>
+    function have_product(){
+      alert('有使用者有使用到這筆資料，所以不能刪除');
+    }
+</script>
+
+{% endblock content %}

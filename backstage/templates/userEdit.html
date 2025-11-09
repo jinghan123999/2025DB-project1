@@ -1,0 +1,36 @@
+{% extends "backstage.html" %}
+{% block head %}
+{{ super() }}
+{% endblock head %}
+
+{% block title %} 編輯使用者 {% endblock title %}
+
+{% block content %}
+
+
+<br/>
+<div class="container-xxl">
+    <h3>編輯使用者</h3>
+    <form method="post" action={{ url_for('manager.userEdit') }}>
+        <input type="hidden" name="mid" value="{{ data.mid }}">
+        <div class="mb-3">
+            <label class="form-label">使用者名稱</label>
+            <input class="form-control" name="name" value="{{ data.name }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">使用者帳號</label>
+            <input class="form-control" name="account" value="{{ data.account }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">身分</label>
+            <select class="form-select" name="identity">
+                <option value="user" {% if data.identity == 'user' %}selected{% endif %}>user</option>
+                <option value="manager" {% if data.identity == 'manager' %}selected{% endif %}>manager</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">儲存</button>
+        <a href={{ url_for('manager.userManager') }} class="btn btn-secondary">取消</a>
+    </form>
+</div>
+
+{% endblock content %}

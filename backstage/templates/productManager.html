@@ -1,0 +1,207 @@
+{% extends "backstage.html" %}
+{% block head %}
+{{ super() }}
+{% endblock head %}
+
+{% block title %} 商品管理 {% endblock title %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages[0] == 'No permission' %}
+  
+<script language="javascript">
+
+  alert('您沒有使用者的權限喔！');
+
+</script>
+
+
+{% endif %}
+{% endwith %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages[0] == 'failed' %}
+  
+<script language="javascript">
+
+  alert('有使用者有使用到這筆資料，所以不能刪除');
+
+</script>
+
+{% endif %}
+{% endwith %}
+
+<script>
+    $(document).ready(function(){
+        $("#keyword").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#product tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+&nbsp;
+&nbsp;
+<div class="d-flex justify-content-between container-xxl">
+    <div class="d-flex col-sm-4">
+        <span class="input-group-text" id="basic-addon1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
+        </span>
+        <input class="form-control me-2" id="keyword" placeholder="搜尋商品" aria-label="Search">
+    </div>
+    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        新增商品
+    </button>
+    
+</div>
+
+<form method="post" enctype=multipart/form-data action={{ url_for('manager.add') }}>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">新增商品</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="inputProductName" class="form-label">商品名稱</label>
+                        <input type="text" class="form-control" id="inputProductName" name="pname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputUnitPrice" class="form-label">商品單價</label>
+                        <input type="number" class="form-control" id="inputUnitPrice" name="price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputProductCategory" class="form-label">商品種類</label>
+                        <select id="inputProductCategory" class="form-select" name="category" required>
+                            <option selected disabled value="">請選擇類型</option>
+
+                            <optgroup label="書籍與影音">
+                                <option value="小說">小說</option>
+                                <option value="漫畫">漫畫</option>
+                                <option value="教科書">教科書</option>
+                                <option value="商業理財">商業理財</option>
+                                <option value="流行音樂 CD">流行音樂 CD</option>
+                                <option value="古典音樂 CD">古典音樂 CD</option>
+                                <option value="電影 DVD">電影 DVD</option>
+                                <option value="動畫 DVD">動畫 DVD</option>
+                            </optgroup>
+
+                            <optgroup label="3C 與家電">
+                                <option value="手機">手機</option>
+                                <option value="筆電 / 桌機">筆電 / 桌機</option>
+                                <option value="平板電腦">平板電腦</option>
+                                <option value="相機 / 攝影機">相機 / 攝影機</option>
+                                <option value="家用電器">家用電器</option>
+                                <option value="週邊 / 配件">週邊 / 配件</option>
+                            </optgroup>
+
+                            <optgroup label="服飾與配件">
+                                <option value="男裝">男裝</option>
+                                <option value="女裝">女裝</option>
+                                <option value="童裝">童裝</option>
+                                <option value="鞋類">鞋類</option>
+                                <option value="飾品 / 配件">飾品 / 配件</option>
+                            </optgroup>
+
+                            <optgroup label="美妝與保養">
+                                <option value="保養品">保養品</option>
+                                <option value="彩妝">彩妝</option>
+                                <option value="美髮 / 髮品">美髮 / 髮品</option>
+                                <option value="香水">香水</option>
+                            </optgroup>
+
+                            <optgroup label="家居與生活">
+                                <option value="家具">家具</option>
+                                <option value="廚房用品">廚房用品</option>
+                                <option value="清潔用品">清潔用品</option>
+                                <option value="居家裝飾">居家裝飾</option>
+                                <option value="寢具">寢具</option>
+                            </optgroup>
+
+                            <optgroup label="食品與飲品">
+                                <option value="零食">零食</option>
+                                <option value="飲品">飲品</option>
+                                <option value="健康食品">健康食品</option>
+                                <option value="即食料理">即食料理</option>
+                            </optgroup>
+
+                            <optgroup label="運動與戶外">
+                                <option value="健身器材">健身器材</option>
+                                <option value="戶外用品">戶外用品</option>
+                                <option value="露營裝備">露營裝備</option>
+                                <option value="運動服飾">運動服飾</option>
+                            </optgroup>
+
+                            <optgroup label="玩具與遊戲">
+                                <option value="兒童玩具">兒童玩具</option>
+                                <option value="模型 / 公仔">模型 / 公仔</option>
+                                <option value="桌上遊戲">桌上遊戲</option>
+                                <option value="電玩遊戲">電玩遊戲</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputProductDesc" class="form-label">商品敘述</label>
+                        <textarea class="form-control" id="inputProductDesc" name="description" required></textarea>
+                    </div>
+                    <!-- <div class="mb-3">
+                        <label for="inputProductImg" class="form-label">商品圖片</label><br/>
+                        <input type="file" name="file" id="file-uploader" data-target="file-uploader" required/>
+                    </div> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-success">確定新增</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<br/>
+
+<div class="container-xxl">
+
+<form method='post' action={{ url_for('manager.productManager') }} >
+<table id="manager" class="table table-bordered">
+    <thead>
+        <tr>
+            <th width="10%"><center>商品編號</center></th>
+            <th width="20%"><center>商品名稱</center></th>
+            <th width="15%"><center>商品單價</center></th>
+            <th width="15%"><center>商品類別</center></th>
+            <th colspan="2"><center>資料操作</center></th>
+        </tr>
+    </thead>
+    <tbody id="product">
+    {% for i in book_data %}
+        <tr>
+            <td><center>{{ i.商品編號 }}</center></td>
+            <td><center>{{ i.商品名稱 }}</center></td>
+            <td><center>{{ i.商品售價 }}</center></td>
+            <td><center>{{ i.商品類別 }}</center></td>
+            <td><center><button type="submit" value="{{i.商品編號}}" name="edit" class="btn btn-success">編輯商品</button></center></td>
+            <td><center><button type="submit" value="{{i.商品編號}}" name="delete" onclick="return (confirm('你確定要刪除 \'{{ i.商品名稱 }}\' 嗎？'))" class="btn btn-danger">刪除商品</button></center></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    
+</table>
+</form>
+
+
+</div>
+
+<script>
+    function have_product(){
+      alert('有使用者有使用到這筆資料，所以不能刪除');
+    }
+</script>
+
+{% endblock content %}

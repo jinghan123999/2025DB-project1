@@ -1,0 +1,125 @@
+{% extends "backstage.html" %}
+{% block head %}
+{{ super() }}
+
+{% endblock head %}
+
+{% block title %}BookStore{% endblock title%}
+
+{% block content%}
+
+
+<br/>
+<div class="container-xl">
+  <br/>
+  <form method="post" enctype=multipart/form-data action={{ url_for('manager.edit') }}>
+    <table class="table table-bordered">
+      <tr>
+        <th>商品編號</th>
+        <td><input class="form-control" type="text" value="{{ data.商品編號 }}" name="pid" readonly class="id_input"></td>
+      </tr>
+      <tr>
+        <th>商品名稱</th>
+        <td><input class="form-control" type="text" value="{{ data.商品名稱 }}" name="pname" required></td>
+      </tr>
+      <tr>
+        <th>單價</th>
+        <td><input class="form-control" type="text" value="{{ data.單價 }}" name="price" required></td>
+      </tr>
+      <tr>
+        <th>類別</th>
+        <td>
+      <select id="inputProductCategory" class="form-control" name="category" required>
+      <option disabled value="">請選擇類型</option>
+
+      <optgroup label="書籍與影音">
+        <option value="小說" {% if data.類別 == '小說' %}selected{% endif %}>小說</option>
+        <option value="漫畫" {% if data.類別 == '漫畫' %}selected{% endif %}>漫畫</option>
+        <option value="教科書" {% if data.類別 == '教科書' %}selected{% endif %}>教科書</option>
+        <option value="商業理財" {% if data.類別 == '商業理財' %}selected{% endif %}>商業理財</option>
+        <option value="流行音樂 CD" {% if data.類別 == '流行音樂 CD' %}selected{% endif %}>流行音樂 CD</option>
+        <option value="古典音樂 CD" {% if data.類別 == '古典音樂 CD' %}selected{% endif %}>古典音樂 CD</option>
+        <option value="電影 DVD" {% if data.類別 == '電影 DVD' %}selected{% endif %}>電影 DVD</option>
+        <option value="動畫 DVD" {% if data.類別 == '動畫 DVD' %}selected{% endif %}>動畫 DVD</option>
+      </optgroup>
+
+      <optgroup label="3C 與家電">
+        <option value="手機" {% if data.類別 == '手機' %}selected{% endif %}>手機</option>
+        <option value="筆電 / 桌機" {% if data.類別 == '筆電 / 桌機' %}selected{% endif %}>筆電 / 桌機</option>
+        <option value="平板電腦" {% if data.類別 == '平板電腦' %}selected{% endif %}>平板電腦</option>
+        <option value="相機 / 攝影機" {% if data.類別 == '相機 / 攝影機' %}selected{% endif %}>相機 / 攝影機</option>
+        <option value="家用電器" {% if data.類別 == '家用電器' %}selected{% endif %}>家用電器</option>
+        <option value="週邊 / 配件" {% if data.類別 == '週邊 / 配件' %}selected{% endif %}>週邊 / 配件</option>
+      </optgroup>
+
+      <optgroup label="服飾與配件">
+        <option value="男裝" {% if data.類別 == '男裝' %}selected{% endif %}>男裝</option>
+        <option value="女裝" {% if data.類別 == '女裝' %}selected{% endif %}>女裝</option>
+        <option value="童裝" {% if data.類別 == '童裝' %}selected{% endif %}>童裝</option>
+        <option value="鞋類" {% if data.類別 == '鞋類' %}selected{% endif %}>鞋類</option>
+        <option value="飾品 / 配件" {% if data.類別 == '飾品 / 配件' %}selected{% endif %}>飾品 / 配件</option>
+      </optgroup>
+
+      <optgroup label="美妝與保養">
+        <option value="保養品" {% if data.類別 == '保養品' %}selected{% endif %}>保養品</option>
+        <option value="彩妝" {% if data.類別 == '彩妝' %}selected{% endif %}>彩妝</option>
+        <option value="美髮 / 髮品" {% if data.類別 == '美髮 / 髮品' %}selected{% endif %}>美髮 / 髮品</option>
+        <option value="香水" {% if data.類別 == '香水' %}selected{% endif %}>香水</option>
+      </optgroup>
+
+      <optgroup label="家居與生活">
+        <option value="家具" {% if data.類別 == '家具' %}selected{% endif %}>家具</option>
+        <option value="廚房用品" {% if data.類別 == '廚房用品' %}selected{% endif %}>廚房用品</option>
+        <option value="清潔用品" {% if data.類別 == '清潔用品' %}selected{% endif %}>清潔用品</option>
+        <option value="居家裝飾" {% if data.類別 == '居家裝飾' %}selected{% endif %}>居家裝飾</option>
+        <option value="寢具" {% if data.類別 == '寢具' %}selected{% endif %}>寢具</option>
+      </optgroup>
+
+      <optgroup label="食品與飲品">
+        <option value="零食" {% if data.類別 == '零食' %}selected{% endif %}>零食</option>
+        <option value="飲品" {% if data.類別 == '飲品' %}selected{% endif %}>飲品</option>
+        <option value="健康食品" {% if data.類別 == '健康食品' %}selected{% endif %}>健康食品</option>
+        <option value="即食料理" {% if data.類別 == '即食料理' %}selected{% endif %}>即食料理</option>
+      </optgroup>
+
+      <optgroup label="運動與戶外">
+        <option value="健身器材" {% if data.類別 == '健身器材' %}selected{% endif %}>健身器材</option>
+        <option value="戶外用品" {% if data.類別 == '戶外用品' %}selected{% endif %}>戶外用品</option>
+        <option value="露營裝備" {% if data.類別 == '露營裝備' %}selected{% endif %}>露營裝備</option>
+        <option value="運動服飾" {% if data.類別 == '運動服飾' %}selected{% endif %}>運動服飾</option>
+      </optgroup>
+
+      <optgroup label="玩具與遊戲">
+        <option value="兒童玩具" {% if data.類別 == '兒童玩具' %}selected{% endif %}>兒童玩具</option>
+        <option value="模型 / 公仔" {% if data.類別 == '模型 / 公仔' %}selected{% endif %}>模型 / 公仔</option>
+        <option value="桌上遊戲" {% if data.類別 == '桌上遊戲' %}selected{% endif %}>桌上遊戲</option>
+        <option value="電玩遊戲" {% if data.類別 == '電玩遊戲' %}selected{% endif %}>電玩遊戲</option>
+      </optgroup>
+    </select>
+      </tr>
+      <tr>
+        <th>商品敘述</th>
+        <td>
+          <textarea class="form-control" name="description">{{ data.商品敘述 }}</textarea>
+        </td>
+      </tr>
+      <!-- <tr>
+        <th>商品圖片</th>
+        <td>
+          <input type="file" name="file" id="file-uploader" data-target="file-uploader"/>
+        </td>
+      </tr> -->
+    </table>
+    <center>
+      <div class="option">
+        <button class="btn btn-outline-success" type="submit">確定修改</button> 
+        <a href="{{ url_for('manager.productManager') }}"><button class="btn btn-outline-danger">回商品管理</button></a>
+      </div>
+    </center>
+
+  </form>
+</div>
+
+
+
+{% endblock content%}
